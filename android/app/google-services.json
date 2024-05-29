@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "45688212257",
+    "project_id": "lifesprint-97ff2",
+    "storage_bucket": "lifesprint-97ff2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45688212257:android:a1e73faf0080b43d354c60",
+        "android_client_info": {
+          "package_name": "com.example.lifesprint"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvWUKOP9DIkabZbxf3LpkZU0u4qeB3f8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
