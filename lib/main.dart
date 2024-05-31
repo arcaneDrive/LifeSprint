@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:last_minute_driver/signup.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+
+import 'features/app/splash_screen/splash_screen.dart';
+import 'features/user_auth/presentation/pages/home_page.dart';
+import 'features/user_auth/presentation/pages/login_page.dart';
+import 'features/user_auth/presentation/pages/sign_up_page.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +42,16 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignUpForm(),
+      // home: SignUpForm(),
+       routes: {
+        '/': (context) => const SplashScreen(
+          // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
+          child: LoginPage(),
+        ),
+        '/login': (context) => const LoginPage(),
+        '/signUp': (context) => const SignUpPage(),
+        '/home': (context) => const HomePage(),
+      },
     );
   }
 }

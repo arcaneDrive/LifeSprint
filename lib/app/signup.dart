@@ -21,15 +21,20 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    // beginning of scafold
     return Scaffold(
+      // app bar
       appBar: AppBar(
         title: const Text('Sign Up'),
       ),
       backgroundColor: Colors.black,
+      // body beginning
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
+          // form is taking in the form key to make it unique i dont know here
           key: _formKey,
+          // declared column ||||
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
