@@ -1,9 +1,7 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 
 import '../../../../global/common/toast.dart';
 
@@ -20,7 +18,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text("HomePage"),
+          title: const Text("HomePage"),
         ),
         body: Center(
           child: Column(
@@ -40,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(10)),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "Create Data",
                       style: TextStyle(
@@ -51,17 +49,17 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               StreamBuilder<List<UserModel>>(
                 stream: _readData(),
                 builder: (context, snapshot) {
                   if(snapshot.connectionState == ConnectionState.waiting){
-                    return Center(child: CircularProgressIndicator(),);
+                    return const Center(child: CircularProgressIndicator(),);
                   } if(snapshot.data!.isEmpty){
-                    return Center(child:Text("No Data Yet"));
+                    return const Center(child:Text("No Data Yet"));
                   }
                   final users = snapshot.data;
-                  return Padding(padding: EdgeInsets.all(8),
+                  return Padding(padding: const EdgeInsets.all(8),
                   child: Column(
                     children: users!.map((user) {
                       return ListTile(
@@ -69,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                           onTap: (){
                             _deleteData(user.id!);
                           },
-                          child: Icon(Icons.delete),
+                          child: const Icon(Icons.delete),
                         ),
                         trailing: GestureDetector(
                           onTap: (){
@@ -80,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                                 adress: "Pakistan",)
                             );
                           },
-                          child: Icon(Icons.update),
+                          child: const Icon(Icons.update),
                         ),
                         title: Text(user.username!),
                         subtitle: Text(user.adress!),
@@ -102,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(10)),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "Sign out",
                       style: TextStyle(
