@@ -41,8 +41,8 @@ class _TestPageState extends State<TestPage> {
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        width: 200,
-                        height: 200,
+                        width: 300,
+                        height: 300,
                         decoration: BoxDecoration(
                           color: Colors.red.withOpacity(0.3),
                           shape: BoxShape.circle,
