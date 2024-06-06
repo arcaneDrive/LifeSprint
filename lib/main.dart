@@ -1,54 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:last_minute_driver/app/reports/testpage.dart';
 
-import 'features/app/splash_screen/splash_screen.dart';
 import 'features/user_auth/presentation/pages/home_page.dart';
 import 'features/user_auth/presentation/pages/login_page.dart';
 import 'features/user_auth/presentation/pages/sign_up_page.dart';
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    initialization();
-  }
-
-  void initialization() async {
-    print('pausing');
-    await Future.delayed(const Duration(seconds: 3));
-    print('upausing');
-    FlutterNativeSplash.remove();
-  }
+  FirebaseAuth _auth = FirebaseAuth.instance; // Initialize FirebaseAuth
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Your App Name',
+      title: 'LifeSprint',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: SignUpForm(),
-       routes: {
-        '/': (context) => const SplashScreen(
-          // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
-          child: LoginPage(),
-        ),
-        '/login': (context) => const LoginPage(),
+      home: FutureBuilder(
+        // Use a FutureBuilder to wait for the Firebase Authentication initialization
+        future: _auth.authStateChanges().first,
+        builder: (context, AsyncSnapshot<User?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            // Determine whether the user is authenticated or not
+            bool isAuthenticated = snapshot.data != null;
+            // Return either LoginPage or HomePage based on authentication
+            return isAuthenticated ?  TestPage() : const LoginPage();
+          }
+        },
+      ),
+      routes: {
+        '/login': (context) => const LoginPage(), // Adding the login page route
         '/signUp': (context) => const SignUpPage(),
         '/home': (context) => const HomePage(),
       },

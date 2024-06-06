@@ -1,191 +1,226 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:boxicons/boxicons.dart';
 
+import '../../../../app/utils/colors.dart';
 
-import '../../../../global/common/toast.dart';
-
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text("HomePage"),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _createData(UserModel(
-                    username: "Henry",
-                    age: 21,
-                    adress: "London",
-                  ));
-                },
-                child: Container(
-                  height: 45,
-                  width: 100,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: const Center(
-                    child: Text(
-                      "Create Data",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Icon(
+                              Boxicons.bxs_map,
+                              color: Color(ColorsValue().secondary),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text("Hello {{-------}}",
+                            style: TextStyle(
+                              color: Color(ColorsValue().h5),
+                              fontSize: 14,
+                            )),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: const DecorationImage(
+                              image: AssetImage("assets/images/avtar.png"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 64,
+                ),
+                Text(
+                  "Emergency help \n Needed?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Color(ColorsValue().h1),
+                      fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Material(
+                    elevation: 8,
+                    borderRadius: BorderRadius.circular(400),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: InkWell(
+                      splashColor: Colors.black54,
+                      onTap: () {
+                        _showSOSForm(context);
+                      },
+                      child: Ink.image(
+                        image: const AssetImage('assets/images/sos_button.png'),
+                        height: 205,
+                        width: 205,
+                        fit: BoxFit.cover,
+                        child: const Center(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              StreamBuilder<List<UserModel>>(
-                stream: _readData(),
-                builder: (context, snapshot) {
-                  if(snapshot.connectionState == ConnectionState.waiting){
-                    return const Center(child: CircularProgressIndicator(),);
-                  } if(snapshot.data!.isEmpty){
-                    return const Center(child:Text("No Data Yet"));
-                  }
-                  final users = snapshot.data;
-                  return Padding(padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: users!.map((user) {
-                      return ListTile(
-                        leading: GestureDetector(
-                          onTap: (){
-                            _deleteData(user.id!);
-                          },
-                          child: const Icon(Icons.delete),
-                        ),
-                        trailing: GestureDetector(
-                          onTap: (){
-                            _updateData(
-                              UserModel(
-                                id: user.id,
-                                username: "John Wick",
-                                adress: "Pakistan",)
-                            );
-                          },
-                          child: const Icon(Icons.update),
-                        ),
-                        title: Text(user.username!),
-                        subtitle: Text(user.adress!),
-                      );
-                    }).toList()
-                  ),);
-                }
-              ),
-
-              GestureDetector(
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushNamed(context, "/login");
-                  showToast(message: "Successfully signed out");
-                },
-                child: Container(
-                  height: 45,
-                  width: 100,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: const Center(
-                    child: Text(
-                      "Sign out",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Press the button to send SOS report",
+                  style: TextStyle(
+                    color: Color(ColorsValue().h5),
+                    fontSize: 16,
                   ),
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  "or",
+                  style: TextStyle(
+                    color: Color(ColorsValue().h5),
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Emergency call",
+                  style: TextStyle(
+                    color: Color(ColorsValue().secondary),
+                    fontSize: 24,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ));
-  }
-
-  Stream<List<UserModel>> _readData(){
-    final userCollection = FirebaseFirestore.instance.collection("users");
-
-    return userCollection.snapshots().map((qureySnapshot)
-    => qureySnapshot.docs.map((e)
-    => UserModel.fromSnapshot(e),).toList());
-  }
-
-  void _createData(UserModel userModel) {
-    final userCollection = FirebaseFirestore.instance.collection("users");
-
-    String id = userCollection.doc().id;
-
-    final newUser = UserModel(
-      username: userModel.username,
-      age: userModel.age,
-      adress: userModel.adress,
-        id: id,
-    ).toJson();
-
-    userCollection.doc(id).set(newUser);
-  }
-
-  void _updateData(UserModel userModel) {
-    final userCollection = FirebaseFirestore.instance.collection("users");
-
-    final newData = UserModel(
-      username: userModel.username,
-      id: userModel.id,
-      adress: userModel.adress,
-      age: userModel.age,
-    ).toJson();
-
-    userCollection.doc(userModel.id).update(newData);
-
-  }
-
-  void _deleteData(String id) {
-    final userCollection = FirebaseFirestore.instance.collection("users");
-
-    userCollection.doc(id).delete();
-
-  }
-
-}
-
-class UserModel{
-  final String? username;
-  final String? adress;
-  final int? age;
-  final String? id;
-
-  UserModel({this.id,this.username, this.adress, this.age});
-
-
-  static UserModel fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot){
-    return UserModel(
-      username: snapshot['username'],
-      adress: snapshot['adress'],
-      age: snapshot['age'],
-      id: snapshot['id'],
+        ),
+      ),
     );
   }
 
-  Map<String, dynamic> toJson(){
-    return {
-      "username": username,
-      "age": age,
-      "id": id,
-      "adress": adress,
-    };
+  void _showSOSForm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: AlertDialog(
+            title: const Text('Send report'),
+            content: SOSForm(),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Send report'),
+                onPressed: () {
+                  // Handle form submission
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  
+}
+
+class SOSForm extends StatefulWidget {
+  @override
+  _SOSFormState createState() => _SOSFormState();
+}
+
+class _SOSFormState extends State<SOSForm> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _casualtiesController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            DropdownButtonFormField<String>(
+              value: 'yes',
+              decoration: const InputDecoration(labelText: 'Any casualties'),
+              items: ['yes', 'no'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _casualtiesController.text = newValue!;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select an option';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _locationController,
+              decoration: const InputDecoration(labelText: 'Location'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter the location';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
   }
 }
