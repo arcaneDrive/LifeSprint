@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
 
-class TestPage extends StatelessWidget {
+class TestPage extends StatefulWidget {
+  @override
+  _TestPageState createState() => _TestPageState();
+}
+
+class _TestPageState extends State<TestPage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,21 +83,36 @@ class TestPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Location',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notification_important),
-            label: 'Notification',
-          ),
-        ],
-        selectedItemColor: Colors.red,
-        onTap: (index) {
-          // Handle navigation tap
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.location_on),
+              onPressed: () {
+                _onItemTapped(0);
+              },
+              color: _selectedIndex == 0 ? Colors.red : Colors.grey,
+            ),
+            IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                _onItemTapped(1);
+              },
+              color: _selectedIndex == 1 ? Colors.red : Colors.grey,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Handle central button press
         },
+        child: Icon(Icons.call),
+        backgroundColor: Colors.red,
       ),
     );
   }
