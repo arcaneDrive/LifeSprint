@@ -44,6 +44,9 @@ dependencies:
   fluttertoast: ^8.2.2
   font_awesome_flutter: ^10.6.0
   google_sign_in: ^6.1.5
+  # for database
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
   # new
   boxicons: ^2.1.3
 

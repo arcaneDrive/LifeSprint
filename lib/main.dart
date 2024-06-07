@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:last_minute_driver/app/reports/testpage.dart';
-
-import 'features/user_auth/presentation/pages/home_page.dart';
+import 'app/homepage/homepage.dart';
 import 'features/user_auth/presentation/pages/login_page.dart';
 import 'features/user_auth/presentation/pages/sign_up_page.dart';
 
@@ -22,7 +20,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseAuth _auth = FirebaseAuth.instance; // Initialize FirebaseAuth
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Initialize FirebaseAuth
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             // Determine whether the user is authenticated or not
             bool isAuthenticated = snapshot.data != null;
             // Return either LoginPage or HomePage based on authentication
-            return isAuthenticated ?  TestPage() : const LoginPage();
+            return isAuthenticated ?  const Testpage() : const LoginPage();
           }
         },
       ),
