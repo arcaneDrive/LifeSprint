@@ -86,7 +86,7 @@ class _BotPageState extends State<BotPage> {
         "https://api-inference.huggingface.co/models/Zabihin/Symptom_to_Diagnosis";
     const Map<String, String> headers = {
       "Authorization":
-          "Bearer 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", // Replace with your token
+          "Bearer for apikey", // Replace with your token
       "Content-Type": "application/json"
     };
 

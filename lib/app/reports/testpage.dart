@@ -13,7 +13,7 @@ class Testpage extends StatefulWidget {
 class _TestpageState extends State<Testpage> {
   final DatabaseService _databaseService = DatabaseService.instance;
 
-  String? _task = null;
+  String? _task;
 
   Widget _addTaskbutton() {
     return FloatingActionButton(
